@@ -1,4 +1,5 @@
 function task21(arr) {
+  // Создаю массив объектов с их количеством вхождений в исходном массиве
   const groupedData = arr.reduce(function (acc, obj) {
     const key = `${obj.year}-${obj.month}`;
     if (!acc[key]) {
@@ -7,7 +8,7 @@ function task21(arr) {
     acc[key].opsCount++;
     return acc;
   }, {});
-
+  // Оставляю только 3 самых больших opsCount
   const topMonths = Object.values(groupedData)
     .sort((a, b) => b.opsCount - a.opsCount)
     .slice(0, 3);
@@ -19,6 +20,7 @@ function task22(year, month, arr) {
   let monthWithdrawal = 0;
   let sumReplenishment = 0;
   let sumWithdrawal = 0;
+  // Подсчитываю позначения по каждому объекту массива
   arr.forEach((item) => {
     if (item.year === year && item.month === month) {
       if (item.type === "replenishment") {
@@ -31,10 +33,12 @@ function task22(year, month, arr) {
 
   monthBalance = sumReplenishment - sumWithdrawal;
   monthWithdrawal = sumWithdrawal;
+  // Здесь округляю до десятитысячных
   withdrawalRate =
     Math.round((sumWithdrawal / sumReplenishment) * 10000) / 10000;
+    // Проверяю месяц, если является цифрой, то конкатенирую с нулем
   date = `${year}-${String(month).length == 1 ? "0" + month : month}-31`;
-
+  // Проверка статуса пользователя
   let rank = "";
   if (withdrawalRate < 0.15) {
     rank = "Золотой";
@@ -48,13 +52,14 @@ function task22(year, month, arr) {
 }
 
 function task23(arr) {
+    // Убираю дубликаты обьектов
   newArr = arr.filter(
     (value, index, self) =>
       index ===
       self.findIndex((t) => t.year === value.year && t.month === value.month)
   );
-  console.log(newArr);
   result = [];
+  // Прохожу по каждому месяцу, вызываю свою функцию и считаю totalBalance
   for (i = 0; i < newArr.length; i++) {
     obj = task22(newArr[i].year, newArr[i].month, arr);
     if (result.length > 0) {
@@ -64,5 +69,5 @@ function task23(arr) {
     }
     result.push(obj);
   }
-  console.log(result)
+  return result;
 }
